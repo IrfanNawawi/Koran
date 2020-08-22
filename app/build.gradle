@@ -12,7 +12,6 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -21,6 +20,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    // The Sports DB API Configuration
+    buildTypes.all {
+        buildConfigField "String", "BASEURL", "\"https://newsapi.org/\""
+        buildConfigField "String", "APIKEY", "\"835d5b8b0de0440ab3eb8aaf2410d374\""
     }
 }
 
@@ -37,6 +42,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "androidx.recyclerview:recyclerview:$rootProject.supportLibraryVersion"
     implementation "androidx.cardview:cardview:$rootProject.supportCardviewVersion"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.supportCardviewVersion"
     implementation "de.hdodenhof:circleimageview:$rootProject.supportHdodenhofVersion"
     implementation "com.github.bumptech.glide:glide:$rootProject.supportGlideVersion"
 

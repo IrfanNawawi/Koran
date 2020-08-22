@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Koran</string>
+    <string name="message_error">Data Not Found</string>
 </resources>
