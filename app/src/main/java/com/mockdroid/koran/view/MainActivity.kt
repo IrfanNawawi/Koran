@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.mockdroid.koran.BuildConfig
 import com.mockdroid.koran.R
 import com.mockdroid.koran.model.ArticlesItem
@@ -67,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         rv_categories_menu.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_categories_menu.adapter = CategoryAdapter(listCategory)
+        cv_search.setOnClickListener { Snackbar.make(it,R.string.coming_soon,Snackbar.LENGTH_SHORT).show() }
 
         //check connection
         if (isConnect()) {
