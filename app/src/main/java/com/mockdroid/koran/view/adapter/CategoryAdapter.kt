@@ -3,7 +3,9 @@ package com.mockdroid.koran.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.mockdroid.koran.R
 import com.mockdroid.koran.model.CategoryMenu
 import kotlinx.android.synthetic.main.item_category.view.*
@@ -22,6 +24,10 @@ class CategoryAdapter(val data: List<CategoryMenu>?) :
     override fun onBindViewHolder(holder: CategoryHolder, position: Int) {
         holder.image.setImageResource(data?.get(position)?.image ?: 0)
         holder.name.text = data?.get(position)?.name
+
+        holder.image.setOnClickListener {
+            Snackbar.make(it, R.string.coming_soon, Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     class CategoryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/mainBackground"
         android:orientation="vertical">
 
         <LinearLayout
@@ -22,13 +23,13 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tv_logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="sans-serif-condensed"
                     android:text="Koran Today"
+                    android:textColor="@color/defaultText"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -37,24 +38,52 @@
 
                 <ImageView
                     android:id="@+id/img_mode"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_night"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_night"
                     tools:ignore="VectorDrawableCompat" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/whiteDirty"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:drawableStart="@drawable/ic_search_primary_light"
+                    android:drawableLeft="@drawable/ic_search_primary_light"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="@string/search_news"
+                    android:textColor="@color/defaultDarkText" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:text="Category News"
+                android:textColor="@color/defaultText"
+                android:textSize="14sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_categories_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="true"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginHorizontal="8dp"
+                android:clipToPadding="true"
                 android:padding="8dp"
                 android:scrollbars="none"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -81,6 +110,14 @@
                         android:background="@drawable/sp_rectangle_main"
                         android:fitsSystemWindows="true" />
 
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_gravity="bottom"
+                        android:fitsSystemWindows="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bottom_shadow" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -92,13 +129,14 @@
                             android:layout_marginHorizontal="16dp"
                             android:layout_marginVertical="8dp"
                             android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginVertical="8dp"
                                 android:text="Top Headline News"
                                 android:textColor="@color/colorAccent"
-                                android:padding="10dp"
-                                android:textSize="18sp"/>
+                                android:textSize="14sp" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_news"
@@ -108,7 +146,7 @@
                                 tools:listitem="@layout/item_top_headlines" />
 
                             <LinearLayout
-                                android:id="@+id/llError"
+                                android:id="@+id/ll_error"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
@@ -116,7 +154,6 @@
                                 android:visibility="gone">
 
                                 <ImageView
-                                    android:id="@+id/img_error"
                                     android:layout_width="200dp"
                                     android:layout_height="200dp"
                                     android:src="@drawable/access_denied" />
@@ -126,6 +163,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="10dp"
                                     android:text="@string/message_error"
+                                    android:textColor="@android:color/white"
                                     android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>

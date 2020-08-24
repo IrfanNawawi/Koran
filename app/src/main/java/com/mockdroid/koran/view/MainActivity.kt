@@ -1,12 +1,15 @@
 package com.mockdroid.koran.view
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mockdroid.koran.BuildConfig
 import com.mockdroid.koran.R
@@ -26,6 +29,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val appSettingPref: SharedPreferences = getSharedPreferences("AppSettingPrefs", 0)
+        val sharedPrefsEdit: SharedPreferences.Editor = appSettingPref.edit()
+        val isNightModeOn: Boolean = appSettingPref.getBoolean("NightMode", false)
+
+        if (isNightModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            img_mode.setImageResource(R.drawable.ic_day)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            img_mode.setImageResource(R.drawable.ic_night)
+        }
+
+        img_mode.setOnClickListener {
+            if (isNightModeOn) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                img_mode.setImageResource(R.drawable.ic_night)
+                sharedPrefsEdit.putBoolean("NightMode", false)
+                sharedPrefsEdit.apply()
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                img_mode.setImageResource(R.drawable.ic_day)
+                sharedPrefsEdit.putBoolean("NightMode", true)
+                sharedPrefsEdit.apply()
+            }
+        }
+
         val listCategory = ArrayList<CategoryMenu>()
         listCategory.add(CategoryMenu(R.drawable.ic_bussiness, "Business"))
         listCategory.add(CategoryMenu(R.drawable.ic_entertainment, "Entertainemnt"))
@@ -35,10 +64,11 @@ class MainActivity : AppCompatActivity() {
         listCategory.add(CategoryMenu(R.drawable.ic_tech, "Technology"))
 
         rv_categories_menu.setHasFixedSize(true)
-        rv_categories_menu.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_categories_menu.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_categories_menu.adapter = CategoryAdapter(listCategory)
 
-        // Check Connection
+        //check connection
         if (isConnect()) {
 
             Network.getRetrofit()
@@ -46,6 +76,8 @@ class MainActivity : AppCompatActivity() {
                 .enqueue(object : Callback<TopHeadlineResponse> {
                     override fun onFailure(call: Call<TopHeadlineResponse>, t: Throwable) {
                         pg_news.visibility = View.GONE
+                        rv_news.visibility = View.GONE
+                        ll_error.visibility = View.VISIBLE
                         Log.d("error server", t.message)
                     }
 
@@ -70,7 +102,8 @@ class MainActivity : AppCompatActivity() {
                 })
         } else {
             pg_news.visibility = View.GONE
-            Toast.makeText(this, "No Connection", Toast.LENGTH_SHORT).show()
+            rv_news.visibility = View.GONE
+            ll_error.visibility = View.VISIBLE
         }
     }
 
@@ -81,6 +114,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showData(data: List<ArticlesItem>?) {
-        rv_news.adapter = TopHeadlineAdapter(data)
+        rv_news.adapter = TopHeadlineAdapter(data, object : TopHeadlineAdapter.DetailClickListener {
+            override fun detailData(item: ArticlesItem?) {
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra("data", item)
+                startActivity(intent)
+            }
+        })
     }
 }

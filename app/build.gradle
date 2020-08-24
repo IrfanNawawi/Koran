@@ -39,12 +39,14 @@ dependencies {
 
     // Design
     implementation "androidx.appcompat:appcompat:$rootProject.supportAppCompatVersion"
+    implementation "com.google.android.material:material:$rootProject.supportAppCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "androidx.recyclerview:recyclerview:$rootProject.supportLibraryVersion"
     implementation "androidx.cardview:cardview:$rootProject.supportCardviewVersion"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$rootProject.supportCardviewVersion"
     implementation "de.hdodenhof:circleimageview:$rootProject.supportHdodenhofVersion"
     implementation "com.github.bumptech.glide:glide:$rootProject.supportGlideVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$rootProject.supportLibraryVersion"
 
     // Lib Network
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"

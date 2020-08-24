@@ -1,14 +1,17 @@
 package com.mockdroid.koran.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class ArticlesItem(
 
     @field:SerializedName("publishedAt")
     val publishedAt: String? = null,
 
     @field:SerializedName("author")
-    val author: Any? = null,
+    val author: String? = null,
 
     @field:SerializedName("urlToImage")
     val urlToImage: String? = null,
@@ -27,4 +30,4 @@ data class ArticlesItem(
 
     @field:SerializedName("content")
     val content: String? = null
-)
+) : Parcelable

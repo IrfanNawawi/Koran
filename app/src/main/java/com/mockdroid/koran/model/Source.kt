@@ -1,12 +1,15 @@
 package com.mockdroid.koran.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-class Source(
+@Parcelize
+data class Source(
 
     @field:SerializedName("name")
     val name: String? = null,
 
     @field:SerializedName("id")
-    val id: Any? = null
-)
+    val id: String? = null
+) : Parcelable

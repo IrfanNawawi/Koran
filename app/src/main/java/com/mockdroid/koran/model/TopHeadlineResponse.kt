@@ -1,7 +1,10 @@
 package com.mockdroid.koran.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class TopHeadlineResponse(
 
     @field:SerializedName("totalResults")
@@ -12,4 +15,4 @@ data class TopHeadlineResponse(
 
     @field:SerializedName("status")
     val status: String? = null
-)
+) : Parcelable
