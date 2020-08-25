@@ -1,11 +1,12 @@
 package com.mockdroid.koran.view
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.view.View
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -36,21 +37,68 @@ class DetailActivity : AppCompatActivity() {
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(img_detail_news)
 
+        settingWebview()
         initWebView(url ?: "")
     }
 
     @SuppressLint("SetJavaScriptEnabled")
+    private fun settingWebview() {
+        val webView = webview_news.settings
+        webView.allowContentAccess = true
+        webView.useWideViewPort = true
+        webView.loadsImagesAutomatically = true
+        webView.javaScriptEnabled = true
+        webView.domStorageEnabled = true
+        webView.setSupportZoom(true)
+        webView.builtInZoomControls = true
+        webView.displayZoomControls = false
+        webView.cacheMode = WebSettings.LOAD_NO_CACHE
+        webView.setRenderPriority(WebSettings.RenderPriority.HIGH)
+        webView.setEnableSmoothTransition(true)
+        webView.domStorageEnabled = true
+    }
+
     private fun initWebView(url: String) {
-        val webView: WebView = findViewById(R.id.webview_news)
-        webView.settings.loadsImagesAutomatically = true
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
-        webView.settings.setSupportZoom(true)
-        webView.settings.builtInZoomControls = true
-        webView.settings.displayZoomControls = false
-        webView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-        webView.webViewClient = WebViewClient()
-        webView.loadUrl(url)
+        if (Build.VERSION.SDK_INT >= 19) {
+            webview_news.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+        } else {
+            webview_news.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+        }
+        webview_news.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                pg_detail_news.visibility = View.VISIBLE
+                pg_detail_news.progress = newProgress
+                if (newProgress == 100) {
+                    pg_detail_news.visibility = View.GONE
+                }
+                super.onProgressChanged(view, newProgress)
+            }
+        }
+        webview_news.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, URL: String?): Boolean {
+                view?.loadUrl(URL)
+                pg_detail_news.visibility = View.GONE
+                return true
+            }
+
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    view?.loadUrl(request?.url.toString())
+                }
+                pg_detail_news.visibility = View.VISIBLE
+                return true
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                pg_detail_news.visibility = View.GONE
+            }
+        }
+        webview_news.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+        webview_news.loadUrl(url)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -59,5 +107,13 @@ class DetailActivity : AppCompatActivity() {
             finish()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        if (webview_news.canGoBack()) {
+            webview_news.goBack()
+        } else {
+            super.onBackPressed()
+        }
     }
 }
